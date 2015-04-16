@@ -1,0 +1,24 @@
+# author_utkarsha_s
+# udp_pinger_python_client
+import time
+from socket import *
+clientSocket = socket(AF_INET, SOCK_DGRAM)
+PingNo = 10
+t = 0
+print 'Sending 10 pings to server...'
+while t < PingNo:
+        	t += 1
+        	time_current   = time.localtime()
+        	time_format  = time.strftime("%M:%S", time_current   )
+        	ping_msg = 'Ping %d %s' %(t, time_format  )
+        	start = time.time()
+        	clientSocket.sendto(ping_msg, ('localhost',12000))
+        	clientSocket.settimeout(1)
+        	try:
+                    	return_msg,serverIP = clientSocket.recvfrom(1024)
+                    	print return_msg
+                    	RTT = (time.time()-start)
+                    	print 'Round Trip Time: ', RTT, '\n\n'
+        	except timeout:
+                    	print 'Request timed out\n\n'
+clientSocket.close()
